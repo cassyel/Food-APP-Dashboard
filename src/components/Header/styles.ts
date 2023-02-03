@@ -9,17 +9,23 @@ export const Container = styled.header`
 
 export const Content = styled.div`
   width: 100%;
-  height: 198px;
+  height: 178px;
   max-width: 1216px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  img {
+    width: 250px;
+    height: 100%;
+  }
 `;
 
 export const PageDetails = styled.div`
   h1 {
     color: #fff;
     font-size: 32px;
+    margin-bottom: 6px;
   }
 
   h2 {
@@ -27,6 +33,5 @@ export const PageDetails = styled.div`
     font-weight: 400;
     font-size: 16px;
     opacity: 0.9;
-    margin-top: 6px;
   }
 `;

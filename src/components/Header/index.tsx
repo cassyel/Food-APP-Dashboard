@@ -12,7 +12,8 @@ export function Header() {
           <h2>Acompanhe os pedidos dos clientes</h2>
         </PageDetails>
 
-        <h3>Food APP</h3>
+        <img src={ logo }/>
+
       </Content>
     </Container>
   );
