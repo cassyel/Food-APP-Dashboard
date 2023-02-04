@@ -19,6 +19,12 @@ export const Content = styled.div`
     width: 250px;
     height: 100%;
   }
+
+  @media screen and (max-width: 400px) {
+    img {
+      display: none;
+    }
+  }
 `;
 
 export const PageDetails = styled.div`
