@@ -1,62 +1,125 @@
-import { Container, Board, OrdersContainer } from './styles';
+import { Container } from './styles';
+import { Orders } from '../Orders';
+import { Order } from '../../types/Order';
+
+const orders: Order[] = [
+  {
+    _id: '6666666',
+    table: '123',
+    status: 'WAITING',
+    products: [{
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    }],
+  },
+  {
+    _id: '6666666',
+    table: '123',
+    status: 'WAITING',
+    products: [{
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    }],
+  }, {
+    _id: '6666666',
+    table: '123',
+    status: 'WAITING',
+    products: [{
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    }],
+  },
+  {
+    _id: '6666666',
+    table: '123',
+    status: 'WAITING',
+    products: [{
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    }],
+  },
+  {
+    _id: '6666666',
+    table: '123',
+    status: 'WAITING',
+    products: [{
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    }],
+  },
+  {
+    _id: '6666666',
+    table: '123',
+    status: 'WAITING',
+    products: [{
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    }],
+  }
+];
+
+const orders2: Order[] = [
+  {
+    _id: '6666666',
+    table: '123',
+    status: 'IN_PROGRESS',
+    products: [{
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    },
+    {
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    }],
+  }
+];
 
 export function OrdersBoard() {
   return (
     <Container>
-      <Board>
-        <header>
-          <span>⏱️</span>
-          <strong>Fila de espera</strong>
-          <span>(1)</span>
-        </header>
-
-        <OrdersContainer>
-          <button type='button'>
-            <strong>Mesa 2</strong>
-            <span>2 itens</span>
-          </button>
-          <button type='button'>
-            <strong>Mesa 2</strong>
-            <span>2 itens</span>
-          </button>
-        </OrdersContainer>
-      </Board>
-      <Board>
-        <header>
-          <span>⏱️</span>
-          <strong>Fila de espera</strong>
-          <span>(1)</span>
-        </header>
-
-        <OrdersContainer>
-          <button type='button'>
-            <strong>Mesa 2</strong>
-            <span>2 itens</span>
-          </button>
-          <button type='button'>
-            <strong>Mesa 2</strong>
-            <span>2 itens</span>
-          </button>
-        </OrdersContainer>
-      </Board>
-      <Board>
-        <header>
-          <span>⏱️</span>
-          <strong>Fila de espera</strong>
-          <span>(1)</span>
-        </header>
-
-        <OrdersContainer>
-          <button type='button'>
-            <strong>Mesa 2</strong>
-            <span>2 itens</span>
-          </button>
-          <button type='button'>
-            <strong>Mesa 2</strong>
-            <span>2 itens</span>
-          </button>
-        </OrdersContainer>
-      </Board>
+      <Orders icon='⏳' title='Fila de espera' orders={orders} />
+      <Orders icon='👨🏼‍🍳' title='Em preparação' orders={orders2}/>
+      <Orders icon='✅' title='Pronto' orders={[]}/>
     </Container>
   );
 }
