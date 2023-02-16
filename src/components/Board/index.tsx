@@ -18,10 +18,19 @@ const orders: Order[] = [
     }],
   },
   {
-    _id: '6666666',
+    _id: '666666',
     table: '123',
     status: 'WAITING',
     products: [{
+      product: {
+        name: 'Pizza quatro quijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    },
+    {
       product: {
         name: 'Pizza quatro quijos',
         price: 10,
@@ -31,7 +40,7 @@ const orders: Order[] = [
       _id: '777777',
     }],
   }, {
-    _id: '6666666',
+    _id: '66666',
     table: '123',
     status: 'WAITING',
     products: [{
@@ -45,7 +54,7 @@ const orders: Order[] = [
     }],
   },
   {
-    _id: '6666666',
+    _id: '6666',
     table: '123',
     status: 'WAITING',
     products: [{
@@ -59,7 +68,7 @@ const orders: Order[] = [
     }],
   },
   {
-    _id: '6666666',
+    _id: '666',
     table: '123',
     status: 'WAITING',
     products: [{
@@ -73,7 +82,7 @@ const orders: Order[] = [
     }],
   },
   {
-    _id: '6666666',
+    _id: '66',
     table: '123',
     status: 'WAITING',
     products: [{
@@ -90,7 +99,7 @@ const orders: Order[] = [
 
 const orders2: Order[] = [
   {
-    _id: '6666666',
+    _id: '6',
     table: '123',
     status: 'IN_PROGRESS',
     products: [{
