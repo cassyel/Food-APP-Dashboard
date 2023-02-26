@@ -9,7 +9,7 @@ const orders: Order[] = [
     status: 'WAITING',
     products: [{
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -23,7 +23,7 @@ const orders: Order[] = [
     status: 'WAITING',
     products: [{
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -32,7 +32,7 @@ const orders: Order[] = [
     },
     {
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -45,7 +45,7 @@ const orders: Order[] = [
     status: 'WAITING',
     products: [{
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -59,7 +59,7 @@ const orders: Order[] = [
     status: 'WAITING',
     products: [{
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -73,7 +73,7 @@ const orders: Order[] = [
     status: 'WAITING',
     products: [{
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -87,7 +87,7 @@ const orders: Order[] = [
     status: 'WAITING',
     products: [{
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -101,10 +101,10 @@ const orders2: Order[] = [
   {
     _id: '6',
     table: '123',
-    status: 'IN_PROGRESS',
+    status: 'IN_PRODUCTION',
     products: [{
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -113,7 +113,33 @@ const orders2: Order[] = [
     },
     {
       product: {
-        name: 'Pizza quatro quijos',
+        name: 'Pizza quatro queijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    }],
+  }
+];
+
+const orders3: Order[] = [
+  {
+    _id: '6',
+    table: '123',
+    status: 'DONE',
+    products: [{
+      product: {
+        name: 'Pizza quatro queijos',
+        price: 10,
+        imagePath: 'teste.png'
+      },
+      quantity: 3,
+      _id: '777777',
+    },
+    {
+      product: {
+        name: 'Pizza quatro queijos',
         price: 10,
         imagePath: 'teste.png'
       },
@@ -128,7 +154,7 @@ export function OrdersBoard() {
     <Container>
       <Orders icon='⏳' title='Fila de espera' orders={orders} />
       <Orders icon='👨🏼‍🍳' title='Em preparação' orders={orders2}/>
-      <Orders icon='✅' title='Pronto' orders={[]}/>
+      <Orders icon='✅' title='Pronto' orders={orders3}/>
     </Container>
   );
 }

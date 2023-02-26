@@ -1,4 +1,4 @@
-import { useState, MouseEvent, SyntheticEvent } from 'react';
+import { useState  } from 'react';
 import { Order } from '../../types/Order';
 import { OrderModal } from '../OrderModal';
 import { Board, OrdersContainer } from './styles';
@@ -9,34 +9,25 @@ interface IOrdersProps {
   orders: Array<Order>
 }
 
-interface IModifyModal {
-  status: boolean;
-  style: 'hidden' | 'visible'
-}
-
 export function Orders({ title, icon, orders }: IOrdersProps) {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<null | Order>(null);
+  const scrollBar = document.body.style;
 
-  function modifyModal({ status, style }: IModifyModal) {
-    setModalVisible(status);
-    document.body.style.overflowY = style;
-  }
-
-  function handleOpenModal(event: SyntheticEvent | MouseEvent) {
-    return (event?.target as Element).ariaLabel === 'visibleModal'
-      ? modifyModal({ status: true, style: 'hidden' })
-      : modifyModal({ status: false, style: 'visible' });
+  function handleOpenModal(order?: Order | null) {
+    order
+      ? (setSelectedOrder(order), scrollBar.overflowY = 'hidden')
+      : (setSelectedOrder(null), scrollBar.overflowY = 'visible');
   }
 
   document.addEventListener('keydown', (event) => {
     return event.key === 'Escape'
-      ? modifyModal({ status: false, style: 'visible' })
+      ? (setSelectedOrder(null), scrollBar.overflowY = 'visible')
       : null;
   });
 
   return (
     <Board>
-      <OrderModal handleModal={(event) => handleOpenModal(event)} visible={modalVisible} />
+      <OrderModal order={selectedOrder} handleModal={handleOpenModal}/>
       <header>
         <span>{icon}</span>
         <strong>{title}</strong>
@@ -46,7 +37,7 @@ export function Orders({ title, icon, orders }: IOrdersProps) {
         Boolean(orders.length) && (
           <OrdersContainer>
             {orders.map((order) => (
-              <button onClick={(event) => handleOpenModal(event)} type='button' aria-label='visibleModal' key={order._id}>
+              <button onClick={() => handleOpenModal(order)} type='button' aria-label='visibleModal' key={order._id}>
                 <strong aria-label='visibleModal'>Mesa {order.table}</strong>
                 {
                   order.products.length <= 1
