@@ -14,13 +14,14 @@ export const Content = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 10px;
 
   img {
     width: 250px;
     height: 100%;
   }
 
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 420px) {
     img {
       display: none;
     }

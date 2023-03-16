@@ -1,4 +1,4 @@
-import { useState  } from 'react';
+import { useEffect, useState  } from 'react';
 import { Order } from '../../types/Order';
 import { OrderModal } from '../OrderModal';
 import { Board, OrdersContainer } from './styles';
@@ -19,11 +19,20 @@ export function Orders({ title, icon, orders }: IOrdersProps) {
       : (setSelectedOrder(null), scrollBar.overflowY = 'visible');
   }
 
-  document.addEventListener('keydown', (event) => {
-    return event.key === 'Escape'
-      ? (setSelectedOrder(null), scrollBar.overflowY = 'visible')
-      : null;
-  });
+  function handleCloseModal() {
+    document.addEventListener('keydown', (event) => {
+      return event.key === 'Escape'
+        ? (setSelectedOrder(null), scrollBar.overflowY = 'visible')
+        : null;
+    });
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleCloseModal);
+    return () => {
+      document.removeEventListener('keydown', handleCloseModal);
+    };
+  }, [handleCloseModal, setSelectedOrder]);
 
   return (
     <Board>

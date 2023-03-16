@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { Overlay, ModalBody, OrderDetails } from './styles';
+import { Overlay, ModalBody, OrderDetails, Actions } from './styles';
 import closeIcon from '../../assets/images/close-icon.svg';
 import { Order } from '../../types/Order';
 import { formatCurrency } from '../../utils/formatCurrency';
@@ -7,6 +7,12 @@ import { formatCurrency } from '../../utils/formatCurrency';
 interface IOrderModalProps {
   handleModal: (order?: Order) => void;
   order: Order | null
+}
+
+function total(order: Order) {
+  return formatCurrency(order?.products.reduce((total, { product, quantity }) => {
+    return total + (product.price * quantity);
+  }, 0) || 0);
 }
 
 
@@ -49,8 +55,12 @@ export function OrderModal({ handleModal, order }: IOrderModalProps) {
                   {
                     order.products.map(({ _id, product, quantity }) => (
                       <div className="item" key={_id}>
-                        <img width="70" src={'https://via.placeholder.com/70'} alt={product.name} />
-                        <span className="quantity">{quantity}x</span>
+                        <div
+                          className='product-image'
+                          style={{ backgroundImage: `url("https://food-app-6n6r.onrender.com/uploads/images/${product.imagePath}")` }}
+                          title={product.name}
+                        />
+                        <span className="product-quantity">{quantity}x</span>
                         <div className="product-details">
                           <strong>{product.name}</strong>
                           <span>{formatCurrency(product.price)}</span>
@@ -59,7 +69,23 @@ export function OrderModal({ handleModal, order }: IOrderModalProps) {
                     ))
                   }
                 </div>
+
+                <div className="product-total">
+                  <span>Total</span>
+                  <strong>{total(order)}</strong>
+                </div>
               </OrderDetails>
+
+              <Actions>
+                <button className='primary' type='button'>
+                  <span>🧑‍🍳</span>
+                  <strong>Iniciar Produção</strong>
+                </button>
+
+                <button className='secondary' type='button'>
+                  Cancelar Pedido
+                </button>
+              </Actions>
             </ModalBody>
           </Overlay>
         )
