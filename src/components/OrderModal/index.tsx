@@ -5,10 +5,11 @@ import { Order } from '../../types/Order';
 import { formatCurrency } from '../../utils/formatCurrency';
 
 interface IOrderModalProps {
-  handleModal: (order?: Order) => void;
   order: Order | null;
-  OnCancelOrder: () => Promise<void>;
   isLoading: boolean;
+  handleModal: (order?: Order) => void;
+  onCancelOrder: () => Promise<void>;
+  onChangeOrderStatus: () => void;
 }
 
 function total(order: Order) {
@@ -18,7 +19,13 @@ function total(order: Order) {
 }
 
 
-export function OrderModal({ handleModal, order, OnCancelOrder, isLoading }: IOrderModalProps) {
+export function OrderModal({
+  handleModal,
+  order,
+  onCancelOrder,
+  isLoading,
+  onChangeOrderStatus,
+}: IOrderModalProps) {
   return (
     <Fragment>
       {
@@ -79,23 +86,35 @@ export function OrderModal({ handleModal, order, OnCancelOrder, isLoading }: IOr
               </OrderDetails>
 
               <Actions>
-                <button
-                  className='primary'
-                  type='button'
-                  disabled={isLoading}
-                >
-                  <span>🧑‍🍳</span>
-                  <strong>Iniciar Produção</strong>
-                </button>
+                {order.status !== 'DONE' && (
+                  <Fragment>
+                    <button
+                      className='primary'
+                      type='button'
+                      disabled={isLoading}
+                      onClick={onChangeOrderStatus}
+                    >
+                      <span>
+                        {order.status === 'WAITING' && '🧑‍🍳'}
+                        {order.status === 'IN_PRODUCTION' && '✅'}
+                      </span>
+                      <strong>
+                        {order.status === 'WAITING' && 'Iniciar Produção'}
+                        {order.status === 'IN_PRODUCTION' && 'Concluir Pedido'}
+                      </strong>
+                    </button>
 
-                <button
-                  className='secondary'
-                  type='button'
-                  onClick={OnCancelOrder}
-                  disabled={isLoading}
-                >
+
+                    <button
+                      className='secondary'
+                      type='button'
+                      onClick={onCancelOrder}
+                      disabled={isLoading}
+                    >
                   Cancelar Pedido
-                </button>
+                    </button>
+                  </Fragment>
+                )}
               </Actions>
             </ModalBody>
           </Overlay>

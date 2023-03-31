@@ -4,6 +4,9 @@ import { Header } from './components/Header';
 import { OrdersBoard } from './components/Orders';
 import { api } from './utils/api';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export function App() {
   useEffect(() => {
     api
@@ -22,6 +25,7 @@ export function App() {
       <GlobalStyles />
       <Header />
       <OrdersBoard />
+      <ToastContainer position='bottom-center'/>
     </Fragment>
   );
 }

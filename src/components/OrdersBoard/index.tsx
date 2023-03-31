@@ -4,14 +4,23 @@ import { api } from '../../utils/api';
 import { OrderModal } from '../OrderModal';
 import { Board, OrdersContainer } from './styles';
 
+import { toast } from 'react-toastify';
+
 interface IOrdersProps {
   title: string;
   icon: string;
   orders: Array<Order>;
-  onCancelOrder: (order: string) => void;
+  onCancelOrder: (orderId: string) => void;
+  onChangeOrderStatus: (orderId: string, status: Order['status']) => void;
 }
 
-export function Orders({ title, icon, orders, onCancelOrder }: IOrdersProps) {
+export function Orders({
+  title,
+  icon,
+  orders,
+  onCancelOrder,
+  onChangeOrderStatus,
+}: IOrdersProps) {
   const [selectedOrder, setSelectedOrder] = useState<null | Order>(null);
   const [isLoading, setIsLoading] = useState(false);
   const scrollBar = document.body.style;
@@ -22,18 +31,33 @@ export function Orders({ title, icon, orders, onCancelOrder }: IOrdersProps) {
       : (setSelectedOrder(null), scrollBar.overflowY = 'visible');
   }
 
-  function handleCloseModal() {
-    document.addEventListener('keydown', (event) => {
-      return event.key === 'Escape'
-        ? (setSelectedOrder(null), scrollBar.overflowY = 'visible')
-        : null;
-    });
+  function handleCloseModal(event: KeyboardEvent) {
+    return event.key === 'Escape'
+      ? (setSelectedOrder(null), scrollBar.overflowY = 'visible')
+      : null;
+  }
+
+  async function handleChangeOrderStatus() {
+    setIsLoading(true);
+
+    const status = selectedOrder?.status === 'WAITING'
+      ? 'IN_PRODUCTION'
+      : 'DONE';
+
+    await api.patch(`/orders/${selectedOrder?._id}`,{ status });
+
+    toast.success(`O pedido da mesa ${selectedOrder?.table} teve o status alterado!`);
+
+    onChangeOrderStatus(selectedOrder!._id, status);
+    setIsLoading(false);
+    setSelectedOrder(null);
   }
 
   async function handleCancelOrder() {
     setIsLoading(true);
 
     await api.delete(`/orders/${selectedOrder?._id}`);
+    toast.success(`O pedido da mesa ${selectedOrder?.table} foi cancelado!`);
 
     onCancelOrder(selectedOrder!._id);
     setIsLoading(false);
@@ -42,18 +66,20 @@ export function Orders({ title, icon, orders, onCancelOrder }: IOrdersProps) {
 
   useEffect(() => {
     document.addEventListener('keydown', handleCloseModal);
+
     return () => {
       document.removeEventListener('keydown', handleCloseModal);
     };
-  }, [handleCloseModal, setSelectedOrder]);
+  }, []);
 
   return (
     <Board>
       <OrderModal
         order={selectedOrder}
         handleModal={handleOpenModal}
-        OnCancelOrder={handleCancelOrder}
         isLoading={isLoading}
+        onCancelOrder={handleCancelOrder}
+        onChangeOrderStatus={handleChangeOrderStatus}
       />
       <header>
         <span>{icon}</span>
