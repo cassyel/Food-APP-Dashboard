@@ -6,7 +6,9 @@ import { formatCurrency } from '../../utils/formatCurrency';
 
 interface IOrderModalProps {
   handleModal: (order?: Order) => void;
-  order: Order | null
+  order: Order | null;
+  OnCancelOrder: () => Promise<void>;
+  isLoading: boolean;
 }
 
 function total(order: Order) {
@@ -16,7 +18,7 @@ function total(order: Order) {
 }
 
 
-export function OrderModal({ handleModal, order }: IOrderModalProps) {
+export function OrderModal({ handleModal, order, OnCancelOrder, isLoading }: IOrderModalProps) {
   return (
     <Fragment>
       {
@@ -57,7 +59,7 @@ export function OrderModal({ handleModal, order }: IOrderModalProps) {
                       <div className="item" key={_id}>
                         <div
                           className='product-image'
-                          style={{ backgroundImage: `url("https://food-app-6n6r.onrender.com/uploads/images/${product.imagePath}")` }}
+                          style={{ backgroundImage: `url("${import.meta.env.VITE_API_IMAGES}/${product.imagePath}")` }}
                           title={product.name}
                         />
                         <span className="product-quantity">{quantity}x</span>
@@ -77,12 +79,21 @@ export function OrderModal({ handleModal, order }: IOrderModalProps) {
               </OrderDetails>
 
               <Actions>
-                <button className='primary' type='button'>
+                <button
+                  className='primary'
+                  type='button'
+                  disabled={isLoading}
+                >
                   <span>🧑‍🍳</span>
                   <strong>Iniciar Produção</strong>
                 </button>
 
-                <button className='secondary' type='button'>
+                <button
+                  className='secondary'
+                  type='button'
+                  onClick={OnCancelOrder}
+                  disabled={isLoading}
+                >
                   Cancelar Pedido
                 </button>
               </Actions>

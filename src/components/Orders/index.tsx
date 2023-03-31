@@ -1,63 +1,44 @@
-import { useEffect, useState  } from 'react';
+import { Container } from './styles';
+import { Orders } from '../OrdersBoard';
+import { useEffect, useState } from 'react';
 import { Order } from '../../types/Order';
-import { OrderModal } from '../OrderModal';
-import { Board, OrdersContainer } from './styles';
+import { api } from '../../utils/api';
 
-interface IOrdersProps {
-  title: string;
-  icon: string;
-  orders: Array<Order>
-}
 
-export function Orders({ title, icon, orders }: IOrdersProps) {
-  const [selectedOrder, setSelectedOrder] = useState<null | Order>(null);
-  const scrollBar = document.body.style;
-
-  function handleOpenModal(order?: Order | null) {
-    order
-      ? (setSelectedOrder(order), scrollBar.overflowY = 'hidden')
-      : (setSelectedOrder(null), scrollBar.overflowY = 'visible');
-  }
-
-  function handleCloseModal() {
-    document.addEventListener('keydown', (event) => {
-      return event.key === 'Escape'
-        ? (setSelectedOrder(null), scrollBar.overflowY = 'visible')
-        : null;
-    });
-  }
+export function OrdersBoard() {
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    document.addEventListener('keydown', handleCloseModal);
-    return () => {
-      document.removeEventListener('keydown', handleCloseModal);
-    };
-  }, [handleCloseModal, setSelectedOrder]);
+    api.get('/orders')
+      .then(({ data }) => {
+        setOrders(data);
+      });
+  }, []);
+
+  function handleCancelOrder(orderId: string) {
+    setOrders((prevState) => prevState.filter(order => order._id !== orderId));
+  }
 
   return (
-    <Board>
-      <OrderModal order={selectedOrder} handleModal={handleOpenModal}/>
-      <header>
-        <span>{icon}</span>
-        <strong>{title}</strong>
-        <span>( {orders.length} )</span>
-      </header>
-      {
-        Boolean(orders.length) && (
-          <OrdersContainer>
-            {orders.map((order) => (
-              <button onClick={() => handleOpenModal(order)} type='button' aria-label='visibleModal' key={order._id}>
-                <strong aria-label='visibleModal'>Mesa {order.table}</strong>
-                {
-                  order.products.length <= 1
-                    ? <span aria-label='visibleModal'>{order.products.length} item</span>
-                    : <span aria-label='visibleModal'>{order.products.length} itens</span>
-                }
-              </button>
-            ))}
-          </OrdersContainer>
-        )
-      }
-    </Board>
+    <Container>
+      <Orders
+        icon='⏳'
+        title='Fila de espera'
+        orders={orders.filter((order) => order.status === 'WAITING')}
+        onCancelOrder={handleCancelOrder}
+      />
+      <Orders
+        icon='👨🏼‍🍳'
+        title='Em preparação'
+        orders={orders.filter((order) => order.status === 'IN_PRODUCTION')}
+        onCancelOrder={handleCancelOrder}
+      />
+      <Orders
+        icon='✅'
+        title='Pronto'
+        orders={orders.filter((order) => order.status === 'DONE')}
+        onCancelOrder={handleCancelOrder}
+      />
+    </Container>
   );
 }
