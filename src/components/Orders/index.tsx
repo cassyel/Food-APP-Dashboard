@@ -4,9 +4,21 @@ import { useEffect, useState } from 'react';
 import { Order } from '../../types/Order';
 import { api } from '../../utils/api';
 
+import socketIo from 'socket.io-client';
 
 export function OrdersBoard() {
   const [orders, setOrders] = useState<Order[]>([]);
+  // import.meta.env.VITE_API_BASE
+
+  useEffect(() => {
+    const socket = socketIo(import.meta.env.VITE_API_BASE, {
+      transports: ['websocket'],
+    });
+
+    socket.on('orders@new', (order) => {
+      setOrders((prevState) => prevState.concat(order));
+    });
+  }, []);
 
   useEffect(() => {
     api.get('/orders')
