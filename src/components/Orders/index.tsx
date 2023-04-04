@@ -1,14 +1,16 @@
 import { Container } from './styles';
 import { Orders } from '../OrdersBoard';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Order } from '../../types/Order';
 import { api } from '../../utils/api';
 
 import socketIo from 'socket.io-client';
 
+import ReactLoading from 'react-loading';
+
 export function OrdersBoard() {
+  const [isLoading, setIsLoading] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
-  // import.meta.env.VITE_API_BASE
 
   useEffect(() => {
     const socket = socketIo(import.meta.env.VITE_API_BASE, {
@@ -24,6 +26,7 @@ export function OrdersBoard() {
     api.get('/orders')
       .then(({ data }) => {
         setOrders(data);
+        setTimeout(() => setIsLoading(false), 500 );
       });
   }, []);
 
@@ -41,27 +44,39 @@ export function OrdersBoard() {
 
   return (
     <Container>
-      <Orders
-        icon='⏳'
-        title='Fila de espera'
-        orders={orders.filter((order) => order.status === 'WAITING')}
-        onCancelOrder={handleCancelOrder}
-        onChangeOrderStatus={handleOrderStatusChange}
-      />
-      <Orders
-        icon='👨🏼‍🍳'
-        title='Em preparação'
-        orders={orders.filter((order) => order.status === 'IN_PRODUCTION')}
-        onCancelOrder={handleCancelOrder}
-        onChangeOrderStatus={handleOrderStatusChange}
-      />
-      <Orders
-        icon='✅'
-        title='Pronto'
-        orders={orders.filter((order) => order.status === 'DONE')}
-        onCancelOrder={handleCancelOrder}
-        onChangeOrderStatus={handleOrderStatusChange}
-      />
+      {isLoading
+        ? (
+          <ReactLoading
+            type='spin'
+            color='#d73035'
+            width={100}
+            height={100}
+          />
+        ) : (
+          <Fragment>
+            <Orders
+              icon='⏳'
+              title='Fila de espera'
+              orders={orders.filter((order) => order.status === 'WAITING')}
+              onCancelOrder={handleCancelOrder}
+              onChangeOrderStatus={handleOrderStatusChange}
+            />
+            <Orders
+              icon='👨🏼‍🍳'
+              title='Em preparação'
+              orders={orders.filter((order) => order.status === 'IN_PRODUCTION')}
+              onCancelOrder={handleCancelOrder}
+              onChangeOrderStatus={handleOrderStatusChange}
+            />
+            <Orders
+              icon='✅'
+              title='Pronto'
+              orders={orders.filter((order) => order.status === 'DONE')}
+              onCancelOrder={handleCancelOrder}
+              onChangeOrderStatus={handleOrderStatusChange}
+            />
+          </Fragment>
+        )}
     </Container>
   );
 }
