@@ -3,7 +3,7 @@ Esta web dashboard foi desenvolvida como parte de um projeto full-stack web e mo
 
 <br>
 
-Em especifico trata-se de um dasboard para gerenciamento de pedidos de um restaurente, para registro e atualização de pedidos em tempo real.
+Em especifico trata-se de um dasboard para gerenciamento de pedidos de um restaurante, para registro e atualização de pedidos em tempo real.
 
 <br>
 
